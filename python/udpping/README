@@ -1,0 +1,5 @@
+Usages:
+udpping [-hv] [-s size] [-x proxy] [-c count] -t [timeout] host port
+
+Example:
+udpping.py -v -x socks5h://127.0.0.1:13659 -c 3 -t 3 -s 1000 47.88.60.64 4000

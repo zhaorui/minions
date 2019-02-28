@@ -15,6 +15,8 @@ TEMPLATE_NAME="PROJECTGENTEMPLATE"
 # ##################################################
 
 function walkdir() {
+    IFS_ORIG=$IFS
+    IFS=$'\t\n'
     pushd $1 > /dev/null
     for item in $(ls); do
         if [ -d $item ]; then
@@ -25,6 +27,7 @@ function walkdir() {
     done
     echo "${PWD}"
     popd > /dev/null 
+    IFS=$IFS_ORIG
 }
 
 function mainScript() {
@@ -57,20 +60,23 @@ function mainScript() {
  TEMPLATE_PATH=${ROOT_PATH}/${language}/${platform}/${type}/${TEMPLATE_NAME}
  echo ${TEMPLATE_PATH}
 
- cp -a ${TEMPLATE_PATH} ${PWD}
+ cp -a "${TEMPLATE_PATH}" "${PWD}"
  
  # replace keyword PROJECTGENTEMPLATE in the content of project
  sed -i '' "s/${TEMPLATE_NAME}/${name}/g" `grep "${TEMPLATE_NAME}" -rl ${TEMPLATE_NAME}`
 
  # replace project name from keyword PROJECTGENTEMPLATE to the name specified by user
+ IFS_ORIG=$IFS
+ IFS=$'\t\n'
  for item in $(walkdir "${TEMPLATE_NAME}"); do
-    itemname=$(basename "$item")
-    itemdir=$(dirname "$item")
+    itemname="$(basename "$item")"
+    itemdir="$(dirname "$item")"
     newname=${itemname//${TEMPLATE_NAME}/${name}}
     if [ $newname != $itemname ]; then
         mv "$item" "$itemdir/$newname"
     fi
  done
+ IFS=$IFS_ORIG
 
 }
 

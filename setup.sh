@@ -1,10 +1,22 @@
 #!/bin/bash
 set -e
 
-MINION_PROJ_PATH=$(dirname $0)
+BASH_TOOL_INSTALL_PATH=/usr/local/bin
+MINION_PROJ_PATH=$(cd `dirname $0`; pwd)
 PROJGEN_PATH=${MINION_PROJ_PATH}/bash/projgen/projgen.sh
 
+echo "MINION_PROJ_PATH=${MINION_PROJ_PATH}"
+
+if [ ! -e "${BASH_TOOL_INSTALL_PATH}/console" ]; then
+    ln -s "${MINION_PROJ_PATH}/bash/console.sh" "${BASH_TOOL_INSTALL_PATH}/console" 
+fi
+
+if [ ! -e "${BASH_TOOL_INSTALL_PATH}/git-taginfo" ]; then
+    ln -s "${MINION_PROJ_PATH}/bash/git-taginfo.sh" "${BASH_TOOL_INSTALL_PATH}/git-taginfo" 
+fi
+
 # TODO: check default shell of current user then add alias to shell boot script;
+# also add PATH environment according to default shell
 
 # Install homebrew if not found
 if ! command -v brew > /dev/null; then
@@ -16,8 +28,10 @@ if ! command -v pod > /dev/null; then
 fi
 
 if ! brew cask list | grep -i hammerspoon > /dev/null; then
-    echo "Hammerspoon is not installed, install it now..."
-    brew cask install hammerspoon
+    if ! [ -d /Applications/Hammerspoon.app ] ; then 
+        echo "Hammerspoon is not installed, install it now..."
+        brew cask install hammerspoon
+    fi
 fi
 
 if ! [ -d ~/.hammerspoon ]; then
@@ -25,4 +39,4 @@ if ! [ -d ~/.hammerspoon ]; then
     mkdir ~/.hammerspoon
 fi
 
-cp lua/HammerSpoon/* ~/.hammerspoon
+cp -a lua/HammerSpoon ~/.hammerspoon

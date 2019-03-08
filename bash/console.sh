@@ -11,6 +11,7 @@ function console {
     case $1 in
     hema) open -a /Applications/Utilities/Console.app "$HEMA_LOG_PATH" ;;
     alilang) open -a /Applications/Utilities/Console.app "$ALILANG_LOG_PATH" ;;
+    *) open /Applications/Utilities/Console.app
     esac
 }
 

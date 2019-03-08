@@ -15,6 +15,10 @@ if [ ! -e "${BASH_TOOL_INSTALL_PATH}/git-taginfo" ]; then
     ln -s "${MINION_PROJ_PATH}/bash/git-taginfo.sh" "${BASH_TOOL_INSTALL_PATH}/git-taginfo" 
 fi
 
+if [ ! -e "${BASH_TOOL_INSTALL_PATH}/git-open" ]; then
+    ln -s "${MINION_PROJ_PATH}/bash/git-open/git-open" "${BASH_TOOL_INSTALL_PATH}/git-open" 
+fi
+
 # TODO: check default shell of current user then add alias to shell boot script;
 # also add PATH environment according to default shell
 

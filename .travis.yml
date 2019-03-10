@@ -1,0 +1,4 @@
+os: osx
+osx_image: xcode10.1
+language: objective-c
+script: xcodebuild clean build -project objc/lsapp/lsapp.xcodeproj

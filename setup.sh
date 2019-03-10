@@ -44,3 +44,10 @@ if ! [ -d ~/.hammerspoon ]; then
 fi
 
 cp -a lua/HammerSpoon ~/.hammerspoon
+
+# Install tools from objc
+xcodebuild clean build -project objc/class-dump/class-dump.xcodeproj
+cp -a objc/class-dump/build/Release/class-dump /usr/local/bin/class-dump
+
+xcodebuild clean build -project objc/lsapp/lsapp.xcodeproj
+cp -a objc/lsapp/build/Release/lsapp /usr/local/bin/lsapp

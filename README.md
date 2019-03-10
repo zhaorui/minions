@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/zhaorui/minions.svg?branch=master)](https://travis-ci.com/zhaorui/minions)
 # Minions
 This project contains many simple and handy tools which are aims to make me work more efficient on macOS . In addition to efficiency, it also good place to tranin my progamming technic and record some good ideas.
 

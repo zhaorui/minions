@@ -1,5 +1,11 @@
 
 require "hot_key_setup"
+require "test"
+
+if test() then
+    print('test is done')
+    return
+end
 
 -- 加载第三方spoon
 hs.loadSpoon("SpeedMenu")

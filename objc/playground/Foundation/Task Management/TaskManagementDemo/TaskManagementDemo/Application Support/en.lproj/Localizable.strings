@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  TaskManagementDemo
+
+  Created by 赵睿 on 3/9/19.
+  Copyright © 2019 com.zhaorui. All rights reserved.
+*/
+
+Fix_Now = "Fix Now";
+Fix_Later = "Fix Later";
+Run_Now = "Run";
+Run_Later = "Maybe Later";

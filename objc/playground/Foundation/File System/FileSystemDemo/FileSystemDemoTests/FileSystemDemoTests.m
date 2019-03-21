@@ -8,6 +8,11 @@
 
 #import <XCTest/XCTest.h>
 
+static NSString* calculator = @"/Applications/Calculator.app/Contents/MacOS/Calculator";
+static NSString* downloads = @"~/Downloads";
+static NSString* newfile = @"~/CocoaTest/FileSystemDemo/newfile";
+static NSString* homefile = @"~/hellothere";
+
 @interface FileSystemDemoTests : XCTestCase
 
 @end
@@ -24,10 +29,35 @@
 
 - (void)testNSFileManager {
     BOOL isFolder;
-    BOOL isExist = [[NSFileManager defaultManager] fileExistsAtPath:@"org.chromium.chromoting.me2me.sh"
+    BOOL isExist = [[NSFileManager defaultManager] fileExistsAtPath:calculator
                                                         isDirectory:&isFolder];
     XCTAssertTrue(isExist && !isFolder);
     
+    // ~ is not recognized so this would fail
+    isExist = [[NSFileManager defaultManager] fileExistsAtPath:downloads
+                                                   isDirectory:&isFolder];
+    XCTAssertFalse(isExist && isFolder);
+    
+    isExist = [[NSFileManager defaultManager] fileExistsAtPath: [downloads stringByStandardizingPath]
+                                                   isDirectory:&isFolder];
+    
+    XCTAssertTrue(isExist && isFolder);
+}
+
+- (void)testNSFileManagerCreateAndRemove {
+    BOOL success = NO;
+    
+    // the file is in ~/Library/Containers/com.zhaorui.FileSystemDemo/Data if sandbox is enabled
+    success = [[NSFileManager defaultManager] createFileAtPath:[homefile stringByStandardizingPath]
+                                                      contents:nil
+                                                    attributes:nil];
+    XCTAssertTrue(success);
+    
+    // intermediate directory is not exist, create would fail
+    success = [[NSFileManager defaultManager] createFileAtPath:[newfile stringByStandardizingPath]
+                                                      contents:nil
+                                                    attributes:nil];
+    XCTAssertFalse(success);
 }
 
 - (void)testPerformanceExample {

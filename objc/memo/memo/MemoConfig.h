@@ -12,8 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MemoConfig : NSObject <NSSecureCoding>
 
-@property (copy, nonatomic) NSString* root;
+@property (copy, nonatomic) NSString* location;
 @property (readonly, nonatomic) NSString* path;
+
++ (id)sharedConfig;
 
 @end
 

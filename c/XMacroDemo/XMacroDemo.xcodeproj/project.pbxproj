@@ -7,13 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C52280A12241E07500B29526 /* MemoConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = C52280A02241E07500B29526 /* MemoConfig.m */; };
-		C54AC6962247C7410008B954 /* memo.m in Sources */ = {isa = PBXBuildFile; fileRef = C54AC6952247C7410008B954 /* memo.m */; };
-		C54AC6992247C8C70008B954 /* add.m in Sources */ = {isa = PBXBuildFile; fileRef = C54AC6982247C8C70008B954 /* add.m */; };
-		C54AC69E224871730008B954 /* argv-array.m in Sources */ = {isa = PBXBuildFile; fileRef = C54AC69D224871730008B954 /* argv-array.m */; };
-		C54AC6A222488B790008B954 /* wrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C54AC6A122488B790008B954 /* wrapper.m */; };
-		C54AC6A42248A90B0008B954 /* usage.m in Sources */ = {isa = PBXBuildFile; fileRef = C54AC6A32248A90B0008B954 /* usage.m */; };
-		C54AC8A72249DD8D0008B954 /* string-list.m in Sources */ = {isa = PBXBuildFile; fileRef = C54AC8A62249DD8D0008B954 /* string-list.m */; };
 		C59B640D222556A4004E2EFC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C59B640C222556A4004E2EFC /* main.m */; };
 /* End PBXBuildFile section */
 
@@ -30,21 +23,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C522809F2241E07500B29526 /* MemoConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoConfig.h; sourceTree = "<group>"; };
-		C52280A02241E07500B29526 /* MemoConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MemoConfig.m; sourceTree = "<group>"; };
-		C54AC6942247C6F20008B954 /* builtin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = builtin.h; sourceTree = "<group>"; };
-		C54AC6952247C7410008B954 /* memo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = memo.m; sourceTree = "<group>"; };
-		C54AC6982247C8C70008B954 /* add.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = add.m; sourceTree = "<group>"; };
-		C54AC69A2247C9F90008B954 /* memo-compat-util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "memo-compat-util.h"; sourceTree = "<group>"; };
-		C54AC69D224871730008B954 /* argv-array.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "argv-array.m"; sourceTree = "<group>"; };
-		C54AC69F224871810008B954 /* argv-array.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "argv-array.h"; sourceTree = "<group>"; };
-		C54AC6A0224878AB0008B954 /* cache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cache.h; sourceTree = "<group>"; };
-		C54AC6A122488B790008B954 /* wrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wrapper.m; sourceTree = "<group>"; };
-		C54AC6A32248A90B0008B954 /* usage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = usage.m; sourceTree = "<group>"; };
-		C54AC8A52249DD8D0008B954 /* string-list.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "string-list.h"; sourceTree = "<group>"; };
-		C54AC8A62249DD8D0008B954 /* string-list.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "string-list.m"; sourceTree = "<group>"; };
-		C59B6409222556A4004E2EFC /* memo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = memo; sourceTree = BUILT_PRODUCTS_DIR; };
+		C59B6409222556A4004E2EFC /* XMacroDemo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = XMacroDemo; sourceTree = BUILT_PRODUCTS_DIR; };
 		C59B640C222556A4004E2EFC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C5D8F44D22377D39005C54B5 /* Utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,18 +39,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C54AC6972247C8780008B954 /* builtin */ = {
-			isa = PBXGroup;
-			children = (
-				C54AC6982247C8C70008B954 /* add.m */,
-			);
-			path = builtin;
-			sourceTree = "<group>";
-		};
 		C59B6400222556A4004E2EFC = {
 			isa = PBXGroup;
 			children = (
-				C59B640B222556A4004E2EFC /* memo */,
+				C59B640B222556A4004E2EFC /* XMacroDemo */,
 				C59B640A222556A4004E2EFC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -77,38 +50,26 @@
 		C59B640A222556A4004E2EFC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C59B6409222556A4004E2EFC /* memo */,
+				C59B6409222556A4004E2EFC /* XMacroDemo */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C59B640B222556A4004E2EFC /* memo */ = {
+		C59B640B222556A4004E2EFC /* XMacroDemo */ = {
 			isa = PBXGroup;
 			children = (
-				C54AC69D224871730008B954 /* argv-array.m */,
-				C54AC69F224871810008B954 /* argv-array.h */,
-				C54AC8A52249DD8D0008B954 /* string-list.h */,
-				C54AC8A62249DD8D0008B954 /* string-list.m */,
-				C54AC6972247C8780008B954 /* builtin */,
-				C54AC6942247C6F20008B954 /* builtin.h */,
-				C54AC6A0224878AB0008B954 /* cache.h */,
 				C59B640C222556A4004E2EFC /* main.m */,
-				C54AC6952247C7410008B954 /* memo.m */,
-				C522809F2241E07500B29526 /* MemoConfig.h */,
-				C52280A02241E07500B29526 /* MemoConfig.m */,
-				C54AC69A2247C9F90008B954 /* memo-compat-util.h */,
-				C54AC6A122488B790008B954 /* wrapper.m */,
-				C54AC6A32248A90B0008B954 /* usage.m */,
+				C5D8F44D22377D39005C54B5 /* Utility.h */,
 			);
-			path = memo;
+			path = XMacroDemo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C59B6408222556A4004E2EFC /* memo */ = {
+		C59B6408222556A4004E2EFC /* XMacroDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C59B6410222556A4004E2EFC /* Build configuration list for PBXNativeTarget "memo" */;
+			buildConfigurationList = C59B6410222556A4004E2EFC /* Build configuration list for PBXNativeTarget "XMacroDemo" */;
 			buildPhases = (
 				C59B6405222556A4004E2EFC /* Sources */,
 				C59B6406222556A4004E2EFC /* Frameworks */,
@@ -118,9 +79,9 @@
 			);
 			dependencies = (
 			);
-			name = memo;
-			productName = memo;
-			productReference = C59B6409222556A4004E2EFC /* memo */;
+			name = XMacroDemo;
+			productName = XMacroDemo;
+			productReference = C59B6409222556A4004E2EFC /* XMacroDemo */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -137,7 +98,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C59B6404222556A4004E2EFC /* Build configuration list for PBXProject "memo" */;
+			buildConfigurationList = C59B6404222556A4004E2EFC /* Build configuration list for PBXProject "XMacroDemo" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -149,7 +110,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C59B6408222556A4004E2EFC /* memo */,
+				C59B6408222556A4004E2EFC /* XMacroDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -160,13 +121,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C59B640D222556A4004E2EFC /* main.m in Sources */,
-				C54AC6A222488B790008B954 /* wrapper.m in Sources */,
-				C54AC6992247C8C70008B954 /* add.m in Sources */,
-				C54AC6A42248A90B0008B954 /* usage.m in Sources */,
-				C54AC69E224871730008B954 /* argv-array.m in Sources */,
-				C54AC6962247C7410008B954 /* memo.m in Sources */,
-				C54AC8A72249DD8D0008B954 /* string-list.m in Sources */,
-				C52280A12241E07500B29526 /* MemoConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,7 +257,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C59B6404222556A4004E2EFC /* Build configuration list for PBXProject "memo" */ = {
+		C59B6404222556A4004E2EFC /* Build configuration list for PBXProject "XMacroDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C59B640E222556A4004E2EFC /* Debug */,
@@ -312,7 +266,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C59B6410222556A4004E2EFC /* Build configuration list for PBXNativeTarget "memo" */ = {
+		C59B6410222556A4004E2EFC /* Build configuration list for PBXNativeTarget "XMacroDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C59B6411222556A4004E2EFC /* Debug */,

@@ -12,11 +12,65 @@
 #define CONFIG_DIR  "~/.config/memo"
 #define CONFIG_PATH CONFIG_DIR"/memoconfig"
 
+typedef NS_ENUM(NSUInteger, EncodeOptions) {
+    EncodeOptionsJson,
+    EncodeOptionsXML,
+    EncodeOptionsBinaryPlist,
+};
+
+static EncodeOptions encodeChoice = EncodeOptionsJson;
+
 @interface MemoConfig ()
 
 @property (readwrite, copy) NSString* path;
 
 @end
+
+@interface MemoConfig (JSONConversion)
++ (instancetype)fromJSONDictionary:(NSDictionary *)dict;
+- (NSDictionary *)JSONDictionary;
+@end
+
+#pragma mark - JSON serialization c interface
+
+MemoConfig *_Nullable MemoConfigFromData(NSData *data, NSError **error)
+{
+    @try {
+        id json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:error];
+        return *error ? nil : [MemoConfig fromJSONDictionary:json];
+    } @catch (NSException *exception) {
+        *error = [NSError errorWithDomain:@"JSONSerialization" code:-1 userInfo:@{ @"exception": exception }];
+        return nil;
+    }
+}
+
+MemoConfig *_Nullable MemoConfigFromJSON(NSString *json, NSStringEncoding encoding, NSError **error)
+{
+    return MemoConfigFromData([json dataUsingEncoding:encoding], error);
+}
+
+NSData *_Nullable MemoConfigToData(MemoConfig *topLevel, NSError **error)
+{
+    @try {
+        id json = [topLevel JSONDictionary];
+        NSData *data = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:error];
+        if (error) {
+            return *error ? nil : data;
+        } else {
+            return data;
+        }
+    } @catch (NSException *exception) {
+        *error = [NSError errorWithDomain:@"JSONSerialization" code:-1 userInfo:@{ @"exception": exception }];
+        return nil;
+    }
+}
+
+NSString *_Nullable MemoConfigToJSON(MemoConfig *topLevel, NSStringEncoding encoding, NSError **error)
+{
+    NSData *data = MemoConfigToData(topLevel, error);
+    return data ? [[NSString alloc] initWithData:data encoding:encoding] : nil;
+}
+
 
 @implementation MemoConfig
 
@@ -51,8 +105,21 @@
                 _memo_config.location = inputLine;
             }
             
-            NSKeyedArchiver* plistEncoder = [[NSKeyedArchiver alloc] initRequiringSecureCoding:YES];
-            [plistEncoder encodeObject:_memo_config forKey:@"root"];
+            NSData* encodedData = nil;
+            switch (encodeChoice) {
+                case EncodeOptionsBinaryPlist: {
+                    NSKeyedArchiver* plistEncoder = [[NSKeyedArchiver alloc] initRequiringSecureCoding:YES];
+                    [plistEncoder encodeObject:_memo_config forKey:@"location"];
+                    encodedData = plistEncoder.encodedData;
+                    break;
+                }
+                case EncodeOptionsJson: {
+                    encodedData = [_memo_config toData:nil];
+                    break;
+                }
+                default:
+                    NSAssert(NO, @"Unknown Encode format!");
+            }
             
             isE = [[NSFileManager defaultManager] fileExistsAtPath:memoconfigDir isDirectory:&isF];
             if (!isE || !isF) {
@@ -68,7 +135,7 @@
             }
             
             BOOL success = [[NSFileManager defaultManager] createFileAtPath:memoconfig
-                                                                   contents:plistEncoder.encodedData
+                                                                   contents:encodedData
                                                                  attributes:nil];
             if (!success) {
                 printf("fail to create "CONFIG_PATH"!\n");
@@ -78,9 +145,21 @@
         } else {
             NSData* content = [NSData dataWithContentsOfFile:memoconfig];
             NSError* decodeError;
-            NSKeyedUnarchiver* decoder = [[NSKeyedUnarchiver alloc] initForReadingFromData:content
-                                                                                     error:&decodeError];
-            _memo_config = [[MemoConfig alloc] initWithCoder:decoder];
+            
+            switch (encodeChoice) {
+                case EncodeOptionsBinaryPlist: {
+                    NSKeyedUnarchiver* decoder = [[NSKeyedUnarchiver alloc] initForReadingFromData:content
+                                                                                             error:&decodeError];
+                    _memo_config = [[MemoConfig alloc] initWithCoder:decoder];
+                    break;
+                }
+                case EncodeOptionsJson: {
+                    _memo_config = MemoConfigFromData(content, &decodeError);
+                    break;
+                }
+                default:
+                    NSAssert(NO, @"Unknow Decode format!");
+            }
         }
         
         _memo_config.path = memoconfig;
@@ -98,13 +177,13 @@
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
-        self.location = [aDecoder decodeObjectForKey:@"root"];
+        self.location = [aDecoder decodeObjectForKey:@"location"];
     }
     return self;
 }
 
 -(void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:self.location forKey:@"root"];
+    [aCoder encodeObject:self.location forKey:@"location"];
 }
 
 
@@ -113,6 +192,55 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + (BOOL)supportsSecureCoding {
     return YES;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#pragma mark - JSON methods
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++(NSDictionary<NSString *, NSString *> *)properties
+{
+    static NSDictionary<NSString *, NSString *> *properties;
+    return properties = properties ? properties : @{
+                                                    @"location": @"location",
+                                                    };
+}
+
++ (_Nullable instancetype)fromData:(NSData *)data error:(NSError *_Nullable *)error
+{
+    return MemoConfigFromData(data, error);
+}
+
++ (_Nullable instancetype)fromJSON:(NSString *)json encoding:(NSStringEncoding)encoding error:(NSError *_Nullable *)error
+{
+    return MemoConfigFromJSON(json, encoding, error);
+}
+
++ (instancetype)fromJSONDictionary:(NSDictionary *)dict
+{
+    return dict ? [[MemoConfig alloc] initWithJSONDictionary:dict] : nil;
+}
+
+- (instancetype)initWithJSONDictionary:(NSDictionary *)dict
+{
+    if (self = [super init]) {
+        [self setValuesForKeysWithDictionary:dict];
+    }
+    return self;
+}
+
+- (NSDictionary *)JSONDictionary
+{
+    return [self dictionaryWithValuesForKeys:MemoConfig.properties.allValues];
+}
+
+- (NSData *_Nullable)toData:(NSError *_Nullable *)error
+{
+    return MemoConfigToData(self, error);
+}
+
+- (NSString *_Nullable)toJSON:(NSStringEncoding)encoding error:(NSError *_Nullable *)error
+{
+    return MemoConfigToJSON(self, encoding, error);
 }
 
 @end

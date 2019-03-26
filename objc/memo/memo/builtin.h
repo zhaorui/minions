@@ -14,5 +14,7 @@
 extern int is_builtin(const char *s);
 
 extern int cmd_add(int argc, const char **argv, const char *prefix);
+extern int cmd_help(int argc, const char **argv, const char *prefix);
+extern int cmd_find(int argc, const char **argv, const char *prefix);
 
 #endif /* builtin_h */

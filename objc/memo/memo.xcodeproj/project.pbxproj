@@ -14,18 +14,23 @@
 		C54AC6A222488B790008B954 /* wrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C54AC6A122488B790008B954 /* wrapper.m */; };
 		C54AC6A42248A90B0008B954 /* usage.m in Sources */ = {isa = PBXBuildFile; fileRef = C54AC6A32248A90B0008B954 /* usage.m */; };
 		C54AC8A72249DD8D0008B954 /* string-list.m in Sources */ = {isa = PBXBuildFile; fileRef = C54AC8A62249DD8D0008B954 /* string-list.m */; };
+		C54AC8AA224A19740008B954 /* memo in Copy Files */ = {isa = PBXBuildFile; fileRef = C59B6409222556A4004E2EFC /* memo */; };
+		C54AC8AC224A1B850008B954 /* help.m in Sources */ = {isa = PBXBuildFile; fileRef = C54AC8AB224A1B850008B954 /* help.m */; };
+		C54AC8AE224A1BFD0008B954 /* find.m in Sources */ = {isa = PBXBuildFile; fileRef = C54AC8AD224A1BFD0008B954 /* find.m */; };
 		C59B640D222556A4004E2EFC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C59B640C222556A4004E2EFC /* main.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C59B6407222556A4004E2EFC /* CopyFiles */ = {
+		C54AC8A9224A19640008B954 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
+			dstPath = /usr/local/bin;
 			dstSubfolderSpec = 0;
 			files = (
+				C54AC8AA224A19740008B954 /* memo in Copy Files */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			name = "Copy Files";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -43,6 +48,8 @@
 		C54AC6A32248A90B0008B954 /* usage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = usage.m; sourceTree = "<group>"; };
 		C54AC8A52249DD8D0008B954 /* string-list.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "string-list.h"; sourceTree = "<group>"; };
 		C54AC8A62249DD8D0008B954 /* string-list.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "string-list.m"; sourceTree = "<group>"; };
+		C54AC8AB224A1B850008B954 /* help.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = help.m; sourceTree = "<group>"; };
+		C54AC8AD224A1BFD0008B954 /* find.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = find.m; sourceTree = "<group>"; };
 		C59B6409222556A4004E2EFC /* memo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = memo; sourceTree = BUILT_PRODUCTS_DIR; };
 		C59B640C222556A4004E2EFC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -62,6 +69,8 @@
 			isa = PBXGroup;
 			children = (
 				C54AC6982247C8C70008B954 /* add.m */,
+				C54AC8AB224A1B850008B954 /* help.m */,
+				C54AC8AD224A1BFD0008B954 /* find.m */,
 			);
 			path = builtin;
 			sourceTree = "<group>";
@@ -112,7 +121,7 @@
 			buildPhases = (
 				C59B6405222556A4004E2EFC /* Sources */,
 				C59B6406222556A4004E2EFC /* Frameworks */,
-				C59B6407222556A4004E2EFC /* CopyFiles */,
+				C54AC8A9224A19640008B954 /* Copy Files */,
 			);
 			buildRules = (
 			);
@@ -159,11 +168,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C54AC8AE224A1BFD0008B954 /* find.m in Sources */,
 				C59B640D222556A4004E2EFC /* main.m in Sources */,
 				C54AC6A222488B790008B954 /* wrapper.m in Sources */,
 				C54AC6992247C8C70008B954 /* add.m in Sources */,
 				C54AC6A42248A90B0008B954 /* usage.m in Sources */,
 				C54AC69E224871730008B954 /* argv-array.m in Sources */,
+				C54AC8AC224A1B850008B954 /* help.m in Sources */,
 				C54AC6962247C7410008B954 /* memo.m in Sources */,
 				C54AC8A72249DD8D0008B954 /* string-list.m in Sources */,
 				C52280A12241E07500B29526 /* MemoConfig.m in Sources */,

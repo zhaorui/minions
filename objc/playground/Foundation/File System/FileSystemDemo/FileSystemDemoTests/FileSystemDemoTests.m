@@ -29,8 +29,9 @@ static NSString* homefile = @"~/hellothere";
 
 - (void)testNSFileManager {
     BOOL isFolder;
-    BOOL isExist = [[NSFileManager defaultManager] fileExistsAtPath:calculator
-                                                        isDirectory:&isFolder];
+    NSFileManager* fileMgr = [NSFileManager defaultManager];
+    BOOL isExist = [fileMgr fileExistsAtPath:calculator
+                                 isDirectory:&isFolder];
     XCTAssertTrue(isExist && !isFolder);
     
     // ~ is not recognized so this would fail
@@ -38,26 +39,74 @@ static NSString* homefile = @"~/hellothere";
                                                    isDirectory:&isFolder];
     XCTAssertFalse(isExist && isFolder);
     
-    isExist = [[NSFileManager defaultManager] fileExistsAtPath: [downloads stringByStandardizingPath]
-                                                   isDirectory:&isFolder];
+    isExist = [fileMgr fileExistsAtPath: [downloads stringByStandardizingPath]
+                            isDirectory:&isFolder];
     
     XCTAssertTrue(isExist && isFolder);
 }
 
 - (void)testNSFileManagerCreateAndRemove {
     BOOL success = NO;
+    NSFileManager* fileMgr = [NSFileManager defaultManager];
     
     // the file is in ~/Library/Containers/com.zhaorui.FileSystemDemo/Data if sandbox is enabled
-    success = [[NSFileManager defaultManager] createFileAtPath:[homefile stringByStandardizingPath]
-                                                      contents:nil
-                                                    attributes:nil];
+    success = [fileMgr createFileAtPath:[homefile stringByStandardizingPath]
+                               contents:nil
+                             attributes:nil];
     XCTAssertTrue(success);
     
     // intermediate directory is not exist, create would fail
-    success = [[NSFileManager defaultManager] createFileAtPath:[newfile stringByStandardizingPath]
-                                                      contents:nil
-                                                    attributes:nil];
+    success = [fileMgr createFileAtPath:[newfile stringByStandardizingPath]
+                               contents:nil
+                             attributes:nil];
     XCTAssertFalse(success);
+}
+
+- (void)testDiscoveringDirContents {
+    NSFileManager* fileMgr = [NSFileManager defaultManager];
+    NSString* downloadPath = [downloads stringByStandardizingPath];
+    NSURL* downloadURL = [NSURL URLWithString:downloadPath];
+    
+    //subPathsAtPath:
+    NSArray* paths = [fileMgr subpathsAtPath:downloadPath];
+    NSArray* paths2 = [fileMgr subpathsOfDirectoryAtPath:downloadPath
+                                                   error:nil];
+    XCTAssertTrue([paths isEqualToArray:paths2]);
+    
+    NSDirectoryEnumerator *dirEnum = [fileMgr enumeratorAtPath:downloadPath];
+    
+    NSString *file;
+    NSMutableArray* allpaths = [NSMutableArray new];
+    while ((file = [dirEnum nextObject])) {
+        [allpaths addObject:file];
+    }
+    
+    NSMutableArray* mutableFileURLs = [NSMutableArray new];
+    NSDirectoryEnumerator *directoryEnumerator =
+    [fileMgr enumeratorAtURL:downloadURL
+  includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey]
+                     options:NSDirectoryEnumerationSkipsHiddenFiles errorHandler:nil];
+    
+    for (NSURL* fileURL in directoryEnumerator) {
+        NSNumber *isDirectory = nil;
+        [fileURL getResourceValue:&isDirectory
+                           forKey:NSURLIsDirectoryKey
+                            error:nil];
+        
+        if ([isDirectory boolValue]) {
+            NSString *name = nil;
+            [fileURL getResourceValue:&name forKey:NSURLNameKey error:nil];
+            
+            if ([name isEqualToString:@".git"]) {
+                [directoryEnumerator skipDescendants];
+            } else {
+                [mutableFileURLs addObject:fileURL];
+            }
+        }
+    }
+    
+    NSLog(@"%@", mutableFileURLs);
+    
 }
 
 - (void)testPerformanceExample {

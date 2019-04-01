@@ -8,7 +8,7 @@
 
 #import "MemoConfig.h"
 
-#define DEFAULT_LOCATION "~/Document/memo"
+#define DEFAULT_LOCATION "~/Documents/memo"
 #define CONFIG_DIR  "~/.config/memo"
 #define CONFIG_PATH CONFIG_DIR"/memoconfig"
 

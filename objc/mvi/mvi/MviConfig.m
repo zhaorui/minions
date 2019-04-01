@@ -15,8 +15,8 @@
     static MviConfig* _config;
     dispatch_once(&onceToken, ^{
         _config = [MviConfig new];
-        _config.patternRegex = @"";
-        _config.templateRegex = @"";
+        _config.patternRegex = nil;
+        _config.templateRegex = nil;
     });
     return _config;
 }

@@ -12,8 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MviConfig : NSObject
 
-@property (nonatomic, copy) NSString* patternRegex;
-@property (nonatomic, copy) NSString* templateRegex;
+@property (nonatomic, copy, nullable) NSString* patternRegex;
+@property (nonatomic, copy, nullable) NSString* templateRegex;
 
 + (id)sharedConfig;
 

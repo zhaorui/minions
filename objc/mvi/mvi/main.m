@@ -124,7 +124,7 @@ int main(int argc, const char * argv[]) {
             usage(mvi_usage_string);
         }
         
-        if (![config.patternRegex length] || ![config.templateRegex length]) {
+        if (config.patternRegex == nil || config.templateRegex == nil) {
             usage(mvi_usage_string);
         }
         

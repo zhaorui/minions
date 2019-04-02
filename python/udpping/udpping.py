@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# use below command to setup udp echo server
+# socat -v UDP-LISTEN:1195,fork PIPE
 
 import logging
 import socket

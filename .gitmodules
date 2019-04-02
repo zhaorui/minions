@@ -4,3 +4,6 @@
 [submodule "objc/class-dump"]
 	path = objc/class-dump
 	url = https://github.com/nygard/class-dump.git
+[submodule "bash/openvpn-install"]
+	path = bash/openvpn-install
+	url = https://github.com/zhaorui/openvpn-install.git

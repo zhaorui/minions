@@ -1,5 +1,15 @@
 #!/bin/bash
 
+args=($@)
+cmd=${args[0]}
+
+case $cmd in
+list)
+    ls /usr/local/bin | grep nopasswd- ; exit 0;;
+*)
+    echo "command is unknown"; exit 1;;
+esac
+
 read -p "Server name: " -e SERV_NAME
 read -p "IP: " -e IP
 read -p "Password: " -e PASSWORD

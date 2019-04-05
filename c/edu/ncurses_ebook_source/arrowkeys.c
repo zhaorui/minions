@@ -10,6 +10,9 @@ int main()
 	do
 	{
 		ch = getch();
+		char buffer[BUFSIZ];
+		snprintf(buffer, sizeof(buffer), "getch: %d\n", ch);
+		addstr(buffer);
 		switch(ch)
 		{
 			case KEY_DOWN:

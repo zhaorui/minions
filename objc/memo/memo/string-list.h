@@ -109,6 +109,15 @@ struct string_list {
  */
 void string_list_init(struct string_list *list, int strdup_strings);
 
+/* Use these functions only on unsorted lists: */
+
+/**
+ * Add string to the end of list.  If list->strdup_string is set, then
+ * string is copied; otherwise the new string_list_entry refers to the
+ * input string.
+ */
+struct string_list_item *string_list_append(struct string_list *list, const char *string);
+
 /** Iterate over each item, as a macro. */
 #define for_each_string_list_item(item,list)            \
 for (item = (list)->items;                      \

@@ -34,6 +34,7 @@ static struct cmd_struct commands[] = {
     { "add", cmd_add, RESERVED },
     { "find", cmd_find, RESERVED},
     { "help", cmd_help, RESERVED},
+    { "home", cmd_home, RESERVED},
 };
 
 static struct cmd_struct *get_builtin(const char *s)

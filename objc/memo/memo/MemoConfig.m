@@ -36,10 +36,14 @@ static EncodeOptions encodeChoice = EncodeOptionsJson;
 MemoConfig *_Nullable MemoConfigFromData(NSData *data, NSError **error)
 {
     @try {
-        id json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:error];
+        id json = [NSJSONSerialization JSONObjectWithData:data
+                                                  options:NSJSONReadingAllowFragments
+                                                    error:error];
         return *error ? nil : [MemoConfig fromJSONDictionary:json];
     } @catch (NSException *exception) {
-        *error = [NSError errorWithDomain:@"JSONSerialization" code:-1 userInfo:@{ @"exception": exception }];
+        *error = [NSError errorWithDomain:@"JSONSerialization"
+                                     code:-1
+                                 userInfo:@{ @"exception": exception }];
         return nil;
     }
 }
@@ -53,14 +57,18 @@ NSData *_Nullable MemoConfigToData(MemoConfig *topLevel, NSError **error)
 {
     @try {
         id json = [topLevel JSONDictionary];
-        NSData *data = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:error];
+        NSData *data = [NSJSONSerialization dataWithJSONObject:json
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:error];
         if (error) {
             return *error ? nil : data;
         } else {
             return data;
         }
     } @catch (NSException *exception) {
-        *error = [NSError errorWithDomain:@"JSONSerialization" code:-1 userInfo:@{ @"exception": exception }];
+        *error = [NSError errorWithDomain:@"JSONSerialization"
+                                     code:-1
+                                 userInfo:@{ @"exception": exception }];
         return nil;
     }
 }

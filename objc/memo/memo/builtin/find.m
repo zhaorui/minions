@@ -26,7 +26,22 @@ static void updateCursor(NSArray<NSURL*>* items, int index) {
         if (index == i) {
             color_fprintf_ln(stdout, GIT_COLOR_BG_RED, "%s", [[items objectAtIndex:i] fileSystemRepresentation]);
         } else {
-            printf("%s\n", [[items objectAtIndex:i] fileSystemRepresentation]);
+            
+            NSURL* item = [items objectAtIndex:i];
+            NSNumber *isDirectory;
+            
+            // this method allows us to get more information about an URL.
+            // We're passing NSURLIsDirectoryKey as key because that's the info we want to know.
+            // Also, we pass a reference to isDirectory variable, so it can be modified to have the return value
+            BOOL success = [item getResourceValue:&isDirectory
+                                           forKey:NSURLIsDirectoryKey
+                                            error:nil];
+            
+            if (success && [isDirectory boolValue]) {
+                color_fprintf_ln(stdout, GIT_COLOR_BLUE, "%s", [item fileSystemRepresentation]);
+            } else {
+                printf("%s\n", [item fileSystemRepresentation]);
+            }
         }
     }
 }
@@ -87,19 +102,33 @@ int cmd_find(int argc, const char **argv, const char *prefix)
     updateCursor(urls, cursor);
     int control;
     while ((control = getchar()) != 'q') {
-        printf("\033[%ldA", [urls count]);
         switch (control) {
             case 'j':
+                // set cursor back to the first menu item
+                printf("\033[%ldA", [urls count]);
+                // repaint
                 cursor = (cursor+1)%[urls count];
                 updateCursor(urls, cursor);
                 break;
             case 'k':
+                // set cursor back to the first menu item
+                printf("\033[%ldA", [urls count]);
+                //repaint
                 if (cursor == 0) {
                     cursor = (int)[urls count];
                 }
                 cursor--;
                 updateCursor(urls, cursor);
                 break;
+            case 'c': {
+                char ** vim_argv = malloc(sizeof(char*) * 3);
+                vim_argv[0] = "cat";
+                vim_argv[1] = xstrdup([[urls objectAtIndex:cursor] fileSystemRepresentation]);
+                vim_argv[2] = NULL;
+                execvp("/bin/cat", vim_argv);
+                die("cat execve");
+                break;
+            }
             case '\r': {
                 char ** vim_argv = malloc(sizeof(char*) * 3);
                 vim_argv[0] = "vim";
@@ -110,6 +139,7 @@ int cmd_find(int argc, const char **argv, const char *prefix)
                 break;
             }
             default:
+                die("unknown key is pressed");
                 break;
         }
     }

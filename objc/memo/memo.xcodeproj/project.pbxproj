@@ -20,6 +20,7 @@
 		C54E0647225ADAE000C03A38 /* home.m in Sources */ = {isa = PBXBuildFile; fileRef = C54E0646225ADAE000C03A38 /* home.m */; };
 		C599B2A72257966000836BC0 /* common.m in Sources */ = {isa = PBXBuildFile; fileRef = C599B2A62257966000836BC0 /* common.m */; };
 		C59B640D222556A4004E2EFC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C59B640C222556A4004E2EFC /* main.m */; };
+		C5A4E1C3225C32AA00D0CCE4 /* NSURL+Convience.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A4E1C2225C32AA00D0CCE4 /* NSURL+Convience.m */; };
 		C5D5EB952259EDD90049F094 /* color.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D5EB942259EDD90049F094 /* color.m */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +59,8 @@
 		C599B2A82257966C00836BC0 /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		C59B6409222556A4004E2EFC /* memo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = memo; sourceTree = BUILT_PRODUCTS_DIR; };
 		C59B640C222556A4004E2EFC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C5A4E1C1225C32AA00D0CCE4 /* NSURL+Convience.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSURL+Convience.h"; sourceTree = "<group>"; };
+		C5A4E1C2225C32AA00D0CCE4 /* NSURL+Convience.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Convience.m"; sourceTree = "<group>"; };
 		C5D5EB942259EDD90049F094 /* color.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = color.m; sourceTree = "<group>"; };
 		C5D5EB962259EDE30049F094 /* color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = color.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -114,6 +117,7 @@
 		C59B640B222556A4004E2EFC /* memo */ = {
 			isa = PBXGroup;
 			children = (
+				C5A4E1BF225C318000D0CCE4 /* class extensions */,
 				C599B2A522578B2700836BC0 /* lib */,
 				C54AC69D224871730008B954 /* argv-array.m */,
 				C54AC69F224871810008B954 /* argv-array.h */,
@@ -131,6 +135,15 @@
 				C54AC6A32248A90B0008B954 /* usage.m */,
 			);
 			path = memo;
+			sourceTree = "<group>";
+		};
+		C5A4E1BF225C318000D0CCE4 /* class extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C5A4E1C1225C32AA00D0CCE4 /* NSURL+Convience.h */,
+				C5A4E1C2225C32AA00D0CCE4 /* NSURL+Convience.m */,
+			);
+			path = "class extensions";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,6 +216,7 @@
 				C5D5EB952259EDD90049F094 /* color.m in Sources */,
 				C599B2A72257966000836BC0 /* common.m in Sources */,
 				C52280A12241E07500B29526 /* MemoConfig.m in Sources */,
+				C5A4E1C3225C32AA00D0CCE4 /* NSURL+Convience.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MemoConfig.h"
+#import "NSURL+Convience.h"
 
 #include "common.h"
 #include "color.h"
@@ -23,21 +24,11 @@ static BOOL match(NSString* str, NSArray* argvs) {
 
 static void updateCursor(NSArray<NSURL*>* items, int index) {
     for (int i = 0; i < [items count]; i++) {
+        NSURL* item = [items objectAtIndex:i];
         if (index == i) {
-            color_fprintf_ln(stdout, GIT_COLOR_BG_RED, "%s", [[items objectAtIndex:i] fileSystemRepresentation]);
+            color_fprintf_ln(stdout, GIT_COLOR_BG_RED, "%s", [item fileSystemRepresentation]);
         } else {
-            
-            NSURL* item = [items objectAtIndex:i];
-            NSNumber *isDirectory;
-            
-            // this method allows us to get more information about an URL.
-            // We're passing NSURLIsDirectoryKey as key because that's the info we want to know.
-            // Also, we pass a reference to isDirectory variable, so it can be modified to have the return value
-            BOOL success = [item getResourceValue:&isDirectory
-                                           forKey:NSURLIsDirectoryKey
-                                            error:nil];
-            
-            if (success && [isDirectory boolValue]) {
+            if ([item isFolder]) {
                 color_fprintf_ln(stdout, GIT_COLOR_BLUE, "%s", [item fileSystemRepresentation]);
             } else {
                 printf("%s\n", [item fileSystemRepresentation]);
@@ -83,7 +74,7 @@ int cmd_find(int argc, const char **argv, const char *prefix)
     NSURL* memoRootURL = [NSURL URLWithString:memoRoot];
     NSFileManager* fileMgr = [NSFileManager defaultManager];
     
-    printf("finding in %s ...\n", [memoRoot UTF8String]);
+    printf("search in directory %s ...\n", [memoRoot UTF8String]);
     
     NSDirectoryEnumerationOptions options = NSDirectoryEnumerationSkipsHiddenFiles|
     NSDirectoryEnumerationSkipsPackageDescendants;
@@ -98,6 +89,11 @@ int cmd_find(int argc, const char **argv, const char *prefix)
             [urls addObject:url];
         }
     }
+    
+    if ([urls count] == 0) {
+        die("keyword is not found");
+    }
+    
     int cursor = 0;
     updateCursor(urls, cursor);
     int control;
@@ -121,21 +117,27 @@ int cmd_find(int argc, const char **argv, const char *prefix)
                 updateCursor(urls, cursor);
                 break;
             case 'c': {
-                char ** vim_argv = malloc(sizeof(char*) * 3);
-                vim_argv[0] = "cat";
-                vim_argv[1] = xstrdup([[urls objectAtIndex:cursor] fileSystemRepresentation]);
-                vim_argv[2] = NULL;
-                execvp("/bin/cat", vim_argv);
-                die("cat execve");
+                NSURL* pickedURL = [urls objectAtIndex:cursor];
+                if (![pickedURL isFolder]) {
+                    char ** vim_argv = malloc(sizeof(char*) * 3);
+                    vim_argv[0] = "cat";
+                    vim_argv[1] = xstrdup([pickedURL fileSystemRepresentation]);
+                    vim_argv[2] = NULL;
+                    execvp("/bin/cat", vim_argv);
+                    die("cat execve");
+                }
                 break;
             }
             case '\r': {
-                char ** vim_argv = malloc(sizeof(char*) * 3);
-                vim_argv[0] = "vim";
-                vim_argv[1] = xstrdup([[urls objectAtIndex:cursor] fileSystemRepresentation]);
-                vim_argv[2] = NULL;
-                execvp("/usr/bin/vim", vim_argv);
-                die("vim execve");
+                NSURL* pickedURL = [urls objectAtIndex:cursor];
+                if (![pickedURL isFolder]) {
+                    char ** vim_argv = malloc(sizeof(char*) * 3);
+                    vim_argv[0] = "vim";
+                    vim_argv[1] = xstrdup([[urls objectAtIndex:cursor] fileSystemRepresentation]);
+                    vim_argv[2] = NULL;
+                    execvp("/usr/bin/vim", vim_argv);
+                    die("vim execve");
+                }
                 break;
             }
             default:

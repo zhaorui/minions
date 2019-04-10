@@ -3,7 +3,9 @@ QUICK AND DIRTY
 
 Execute the following from the src/ directory:
 
-    ./configure    # try to figure out all implementation differences
+
+    #./configure    # try to figure out all implementation differences
+    # Please skip this step, b/c I've done this , there should be a Makefile already 
 
     cd lib         # build the basic library that all programs need
     make           # use "gmake" everywhere on BSD/OS systems

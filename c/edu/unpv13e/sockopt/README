@@ -1,0 +1,6 @@
+To play around in this folder, you probably need a daytime server which
+could be found on site https://tf.nist.gov/tf-cgi/servers.cgi
+
+Have a try:
+nslookup time.nist.gov
+./rcvbuf  129.6.15.28

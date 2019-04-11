@@ -35,14 +35,60 @@ else
 	exit
 fi
 
+newclient () {
+	# Generates the custom client.ovpn
+	cp /etc/openvpn/client-common.txt ~/$1.ovpn
+	echo "<ca>" >> ~/$1.ovpn
+	cat /etc/openvpn/easy-rsa/pki/ca.crt >> ~/$1.ovpn
+	echo "</ca>" >> ~/$1.ovpn
+	echo "<tls-auth>" >> ~/$1.ovpn
+	sed -ne '/BEGIN OpenVPN Static key/,$ p' /etc/openvpn/ta.key >> ~/$1.ovpn
+	echo "</tls-auth>" >> ~/$1.ovpn
+}
+
 if [[ -e /etc/openvpn/server.conf ]]; then
     clear
     echo "Looks like SD-WAN is already installed."
     echo
     echo "What do you want to do?"
-    echo "   1) Remove SD-WAN"
-    echo "   2) Exit"
-    read -p "Select an option [1-4]: " option
+	echo "   1) Add a new user"
+    echo "   2) Remove SD-WAN"
+    echo "   3) Exit"
+    read -p "Select an option [1-3]: " option
+		case $option in
+			1) 
+			echo
+			echo "Tell me a name for the client certificate."
+			echo "Please, use one word only, no special characters."
+			read -p "Client name: " -e CLIENT
+			read -p "Password: " -e PASWD
+			echo "$CLIENT $PASWD" >> /etc/openvpn/psw-file
+			# Generates the custom client.ovpn
+			newclient "$CLIENT"
+			echo
+			echo "Client $CLIENT added, configuration is available at:" ~/"$CLIENT.ovpn"
+			exit
+			;;
+			2) 
+			echo
+			read -p "Do you really want to remove SD-WAN? [y/N]: " -e REMOVE
+			if [[ "$REMOVE" = 'y' || "$REMOVE" = 'Y' ]]; then
+				if [[ "$OS" = 'debian' ]]; then
+					apt-get remove --purge -y openvpn
+				else
+					yum remove openvpn -y
+				fi
+				rm -rf /etc/openvpn
+				echo
+				echo "OpenVPN removed!"
+			else
+				echo
+				echo "Removal aborted!"
+			fi
+			exit
+			;;
+			3) exit;;
+		esac
 else
     clear
 	echo 'Welcome to this SD-WAN installer!'
@@ -129,7 +175,6 @@ else
 	./easyrsa init-pki
 	./easyrsa build-ca nopass
 	EASYRSA_CERT_EXPIRE=3650 ./easyrsa build-server-full server nopass
-	EASYRSA_CERT_EXPIRE=3650 ./easyrsa build-client-full $CLIENT nopass
 	EASYRSA_CRL_DAYS=3650 ./easyrsa gen-crl
 
 	# Move the stuff we need
@@ -151,22 +196,116 @@ YdEIqUuyyOP7uWrat2DX9GgdT0Kj3jlN9K5W7edjcrsZCwenyO4KbXCeAvzhzffi
 ssbzSibBsu/6iGtCOGEoXJf//////////wIBAg==
 -----END DH PARAMETERS-----' > /etc/openvpn/dh.pem
 
+	# Generate checkpsw.sh 
+	curl -Lo /etc/openvpn/checkpsw.sh "https://gist.githubusercontent.com/zhaorui/800c962db30a48d6c158eb04808c2e46/raw/9a8a6aa830f0008f5cf67323d8c5a9c63df1c149/checkpsw.sh"
+	echo "client password" > /etc/openvpn/psw-file
+
 	# Generate server.conf
 	echo "port $PORT
 proto $PROTOCOL
 dev tun
-sndbuf 0
-rcvbuf 0
 ca ca.crt
 cert server.crt
 key server.key
 dh dh.pem
-auth SHA512
+#auth SHA512
 tls-auth ta.key 0
 topology subnet
 server 10.8.0.0 255.255.255.0
 ifconfig-pool-persist ipp.txt" > /etc/openvpn/server.conf
 
+# Uncomment below would change default gw of client to be tunnel, very hardcore!
+# echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server.conf
 
+	# DNS
+	case $DNS in
+		1)
+		# Locate the proper resolv.conf
+		# Needed for systems running systemd-resolved
+		if grep -q "127.0.0.53" "/etc/resolv.conf"; then
+			RESOLVCONF='/run/systemd/resolve/resolv.conf'
+		else
+			RESOLVCONF='/etc/resolv.conf'
+		fi
+		# Obtain the resolvers from resolv.conf and use them for OpenVPN
+		grep -v '#' $RESOLVCONF | grep 'nameserver' | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | while read line; do
+			echo "push \"dhcp-option DNS $line\"" >> /etc/openvpn/server.conf
+		done
+		;;
+		2)
+		echo 'push "dhcp-option DNS 1.1.1.1"' >> /etc/openvpn/server.conf
+		echo 'push "dhcp-option DNS 1.0.0.1"' >> /etc/openvpn/server.conf
+		;;
+		3)
+		echo 'push "dhcp-option DNS 8.8.8.8"' >> /etc/openvpn/server.conf
+		echo 'push "dhcp-option DNS 8.8.4.4"' >> /etc/openvpn/server.conf
+		;;
+		4)
+		echo 'push "dhcp-option DNS 208.67.222.222"' >> /etc/openvpn/server.conf
+		echo 'push "dhcp-option DNS 208.67.220.220"' >> /etc/openvpn/server.conf
+		;;
+		5)
+		echo 'push "dhcp-option DNS 64.6.64.6"' >> /etc/openvpn/server.conf
+		echo 'push "dhcp-option DNS 64.6.65.6"' >> /etc/openvpn/server.conf
+		;;
+	esac
+
+	echo "keepalive 10 120
+cipher AES-256-CBC
+user nobody
+group $GROUPNAME
+persist-key
+persist-tun
+status sdwan-status.log 30
+verb 3
+script-security 3
+auth-user-pass-verify /etc/openvpn/checkpsw.sh via-env
+verify-client-cert none
+username-as-common-name
+crl-verify crl.pem" >> /etc/openvpn/server.conf
+
+	# And finally, restart OpenVPN
+	if [[ "$OS" = 'debian' ]]; then
+		# Little hack to check for systemd
+		if pgrep systemd-journal; then
+			systemctl restart openvpn@server.service
+		else
+			/etc/init.d/openvpn restart
+		fi
+	else
+		if pgrep systemd-journal; then
+			systemctl restart openvpn@server.service
+			systemctl enable openvpn@server.service
+		else
+			service openvpn restart
+			chkconfig openvpn on
+		fi
+	fi
+
+	# client-common.txt is created so we have a template to add further users later
+	echo "client
+dev tun
+proto $PROTOCOL
+sndbuf 0
+rcvbuf 0
+remote $IP $PORT
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+remote-cert-tls server
+auth SHA512
+cipher AES-256-CBC
+setenv opt block-outside-dns
+key-direction 1
+verb 3" > /etc/openvpn/client-common.txt
+
+	# Generates the custom client.ovpn
+	newclient "$CLIENT"
+	echo
+	echo "Finished!"
+	echo
+	echo "Your client configuration is available at:" ~/"$CLIENT.ovpn"
+	echo "If you want to add more clients, you simply need to run this script again!"	
 fi
 

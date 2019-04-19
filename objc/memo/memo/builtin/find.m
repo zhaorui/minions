@@ -10,6 +10,7 @@
 #import "MemoConfig.h"
 #import "NSURL+Convience.h"
 
+#include "apue.h"
 #include "common.h"
 #include "color.h"
 
@@ -37,33 +38,9 @@ static void updateCursor(NSArray<NSURL*>* items, int index) {
     }
 }
 
-/// Mode on startup, which we restore on exit.
-static struct termios terminal_mode_on_startup;
-
 int cmd_find(int argc, const char **argv, const char *prefix)
 {
-    struct termios shell_modes;
-    
-    // Save the initial terminal mode.
-    tcgetattr(STDIN_FILENO, &terminal_mode_on_startup);
-    
-    // Set the mode used for the terminal, initialized to the current mode.
-    memcpy(&shell_modes, &terminal_mode_on_startup, sizeof shell_modes);
-    
-    shell_modes.c_iflag &= ~ICRNL;  // disable mapping CR (\cM) to NL (\cJ)
-    shell_modes.c_iflag &= ~INLCR;  // disable mapping NL (\cJ) to CR (\cM)
-    shell_modes.c_iflag &= ~IXON;   // disable flow control
-    shell_modes.c_iflag &= ~IXOFF;  // disable flow control
-    
-    shell_modes.c_lflag &= ~ICANON;  // turn off canonical mode
-    shell_modes.c_lflag &= ~ECHO;    // turn off echo mode
-    shell_modes.c_lflag &= ~IEXTEN;  // turn off handling of discard and lnext characters
-    
-    shell_modes.c_cc[VMIN] = 1;
-    shell_modes.c_cc[VTIME] = 0;
-    
-    // We need to set the shell-modes for ICRNL
-    tcsetattr(STDIN_FILENO, TCSANOW, &shell_modes);
+    tty_cbreak(STDIN_FILENO);
     
     NSMutableArray* items = [NSMutableArray new];
     for (int i = 1; i < argc; i++) {
@@ -128,7 +105,7 @@ int cmd_find(int argc, const char **argv, const char *prefix)
                 }
                 break;
             }
-            case '\r': {
+            case '\n': {
                 NSURL* pickedURL = [urls objectAtIndex:cursor];
                 if (![pickedURL isFolder]) {
                     char ** vim_argv = malloc(sizeof(char*) * 3);
@@ -146,8 +123,7 @@ int cmd_find(int argc, const char **argv, const char *prefix)
         }
     }
     
-    // Restore the term mode if we own the terminal.
-    tcsetattr(STDIN_FILENO, TCSANOW, &terminal_mode_on_startup);
+    tty_reset(STDIN_FILENO);
     
     return 0;
 }

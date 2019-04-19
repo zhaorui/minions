@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Result : NSObject
 
+@property(strong, nonatomic) NSMutableDictionary* resultMap;
 -(void)queryDidFinishGathering:(NSNotification*)n; 
 
 @end

@@ -11,6 +11,11 @@
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
+        if (argc != 2) {
+            fprintf(stderr, "lsapp <app name>\n");
+            exit(1);
+        }
+        NSString* appName = [NSString stringWithUTF8String:argv[1]];
         Result* result = [[Result alloc] init];
         NSMetadataQuery* query = [[NSMetadataQuery alloc] init];
         [query setSearchScopes: [NSArray arrayWithObjects:@"/Applications",
@@ -27,6 +32,13 @@ int main(int argc, const char * argv[]) {
         [query startQuery];
         
         CFRunLoopRun();
+        
+        if (result.resultMap[appName]) {
+            printf("Found it!\n");
+            printf("%s", [result.resultMap[appName] UTF8String]);
+        } else {
+            printf("App is not exist!\n");
+        }
     }
     return 0;
 }

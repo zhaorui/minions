@@ -18,6 +18,7 @@
 		C54AC8AC224A1B850008B954 /* help.m in Sources */ = {isa = PBXBuildFile; fileRef = C54AC8AB224A1B850008B954 /* help.m */; };
 		C54AC8AE224A1BFD0008B954 /* find.m in Sources */ = {isa = PBXBuildFile; fileRef = C54AC8AD224A1BFD0008B954 /* find.m */; };
 		C54E0647225ADAE000C03A38 /* home.m in Sources */ = {isa = PBXBuildFile; fileRef = C54E0646225ADAE000C03A38 /* home.m */; };
+		C58B761B2265CE7300637ED6 /* ttymodes.c in Sources */ = {isa = PBXBuildFile; fileRef = C58B761A2265CE7300637ED6 /* ttymodes.c */; };
 		C599B2A72257966000836BC0 /* common.m in Sources */ = {isa = PBXBuildFile; fileRef = C599B2A62257966000836BC0 /* common.m */; };
 		C59B640D222556A4004E2EFC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C59B640C222556A4004E2EFC /* main.m */; };
 		C5A4E1C3225C32AA00D0CCE4 /* NSURL+Convience.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A4E1C2225C32AA00D0CCE4 /* NSURL+Convience.m */; };
@@ -55,6 +56,8 @@
 		C54AC8AB224A1B850008B954 /* help.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = help.m; sourceTree = "<group>"; };
 		C54AC8AD224A1BFD0008B954 /* find.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = find.m; sourceTree = "<group>"; };
 		C54E0646225ADAE000C03A38 /* home.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = home.m; sourceTree = "<group>"; };
+		C58B76192265CE5400637ED6 /* apue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = apue.h; sourceTree = "<group>"; };
+		C58B761A2265CE7300637ED6 /* ttymodes.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ttymodes.c; sourceTree = "<group>"; };
 		C599B2A62257966000836BC0 /* common.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = common.m; sourceTree = "<group>"; };
 		C599B2A82257966C00836BC0 /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		C59B6409222556A4004E2EFC /* memo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = memo; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,9 +90,19 @@
 			path = builtin;
 			sourceTree = "<group>";
 		};
+		C58B76182265CE4500637ED6 /* apue */ = {
+			isa = PBXGroup;
+			children = (
+				C58B76192265CE5400637ED6 /* apue.h */,
+				C58B761A2265CE7300637ED6 /* ttymodes.c */,
+			);
+			path = apue;
+			sourceTree = "<group>";
+		};
 		C599B2A522578B2700836BC0 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				C58B76182265CE4500637ED6 /* apue */,
 				C599B2A62257966000836BC0 /* common.m */,
 				C599B2A82257966C00836BC0 /* common.h */,
 				C5D5EB942259EDD90049F094 /* color.m */,
@@ -205,6 +218,7 @@
 			files = (
 				C54E0647225ADAE000C03A38 /* home.m in Sources */,
 				C54AC8AE224A1BFD0008B954 /* find.m in Sources */,
+				C58B761B2265CE7300637ED6 /* ttymodes.c in Sources */,
 				C59B640D222556A4004E2EFC /* main.m in Sources */,
 				C54AC6A222488B790008B954 /* wrapper.m in Sources */,
 				C54AC6992247C8C70008B954 /* add.m in Sources */,

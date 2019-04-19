@@ -46,14 +46,14 @@ def main():
     while ping_cnt < max_cnt:
         snd_time = time.time()
         udp_socket.sendto(payload.encode(), (server, port))
-        udp_socket.settimeout(timeout)
+        udp_socket.settimeout(timeout/1000.0)
         try:
             recv_data, addr = udp_socket.recvfrom(65536)
             if recv_data == payload.encode() and addr[0] == server and addr[1] == port:
                 rtt = (time.time()-snd_time)*1000
                 rtt_vals.append(rtt)
                 print("Reply from %s:%s udp_seq=%d time=%.1f ms" % (server, port, ping_cnt, rtt))
-                time_left = interval * 1000 - rtt
+                time_left = interval - rtt
                 if (time_left > 0):
                     time.sleep(time_left / 1000)
         except socket.timeout:

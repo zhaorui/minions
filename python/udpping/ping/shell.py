@@ -14,7 +14,7 @@ from ping.common import to_str
 verbose = 0
 
 def print_help():
-    print('''usages: udpping [-hv] [-s size] [-x proxy] [-c count] -t [timeout] host port''')
+    print('''usages: udpping [-hv] [-s size] [-x proxy] [-c count] -t [timeout ms] -i [interval ms] host port''')
 
 def print_exception(e):
     global verbose
@@ -107,8 +107,8 @@ def get_config():
     config['size'] = config.get('size', 64)
     config['proxy'] = config.get('proxy', None)
     config['count'] = config.get('count', 10)
-    config['timeout'] = config.get('timeout', 3)
-    config['interval'] = config.get('interval', 1)
+    config['timeout'] = config.get('timeout', 3000)
+    config['interval'] = config.get('interval', 1000)
     config['verbose'] = config.get('verbose', False)
 
     verbose = config['verbose']

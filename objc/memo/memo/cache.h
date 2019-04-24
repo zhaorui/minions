@@ -10,6 +10,7 @@
 #define cache_h
 
 #include "memo-compat-util.h"
+#include "apue.h"
 
 #define alloc_nr(x) (((x)+16)*3/2)
 

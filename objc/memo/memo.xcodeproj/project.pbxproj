@@ -23,6 +23,8 @@
 		C59B640D222556A4004E2EFC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C59B640C222556A4004E2EFC /* main.m */; };
 		C5A4E1C3225C32AA00D0CCE4 /* NSURL+Convience.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A4E1C2225C32AA00D0CCE4 /* NSURL+Convience.m */; };
 		C5D5EB952259EDD90049F094 /* color.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D5EB942259EDD90049F094 /* color.m */; };
+		C5D6F78C226F4199001EE2B1 /* signal.c in Sources */ = {isa = PBXBuildFile; fileRef = C5D6F78B226F4199001EE2B1 /* signal.c */; };
+		C5D6F78E2270312F001EE2B1 /* process.c in Sources */ = {isa = PBXBuildFile; fileRef = C5D6F78D2270312F001EE2B1 /* process.c */; };
 		C5DD83CC226C77DC0005EEFC /* error.c in Sources */ = {isa = PBXBuildFile; fileRef = C5DD83CB226C77DC0005EEFC /* error.c */; };
 		C5DD83CE226C7BCE0005EEFC /* written.c in Sources */ = {isa = PBXBuildFile; fileRef = C5DD83CD226C7BCE0005EEFC /* written.c */; };
 		C5DD83D0226C7FF80005EEFC /* readn.c in Sources */ = {isa = PBXBuildFile; fileRef = C5DD83CF226C7FF80005EEFC /* readn.c */; };
@@ -69,6 +71,8 @@
 		C5A4E1C2225C32AA00D0CCE4 /* NSURL+Convience.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Convience.m"; sourceTree = "<group>"; };
 		C5D5EB942259EDD90049F094 /* color.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = color.m; sourceTree = "<group>"; };
 		C5D5EB962259EDE30049F094 /* color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = color.h; sourceTree = "<group>"; };
+		C5D6F78B226F4199001EE2B1 /* signal.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = signal.c; sourceTree = "<group>"; };
+		C5D6F78D2270312F001EE2B1 /* process.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = process.c; sourceTree = "<group>"; };
 		C5DD83CB226C77DC0005EEFC /* error.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = error.c; sourceTree = "<group>"; };
 		C5DD83CD226C7BCE0005EEFC /* written.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = written.c; sourceTree = "<group>"; };
 		C5DD83CF226C7FF80005EEFC /* readn.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = readn.c; sourceTree = "<group>"; };
@@ -104,11 +108,13 @@
 				C5DD83CB226C77DC0005EEFC /* error.c */,
 				C5DD83CD226C7BCE0005EEFC /* written.c */,
 				C5DD83CF226C7FF80005EEFC /* readn.c */,
+				C5D6F78B226F4199001EE2B1 /* signal.c */,
+				C5D6F78D2270312F001EE2B1 /* process.c */,
 			);
 			path = apue;
 			sourceTree = "<group>";
 		};
-		C599B2A522578B2700836BC0 /* lib */ = {
+		C599B2A522578B2700836BC0 /* base */ = {
 			isa = PBXGroup;
 			children = (
 				C58B76182265CE4500637ED6 /* apue */,
@@ -117,7 +123,7 @@
 				C5D5EB942259EDD90049F094 /* color.m */,
 				C5D5EB962259EDE30049F094 /* color.h */,
 			);
-			path = lib;
+			path = base;
 			sourceTree = "<group>";
 		};
 		C59B6400222556A4004E2EFC = {
@@ -140,7 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				C5A4E1BF225C318000D0CCE4 /* class extensions */,
-				C599B2A522578B2700836BC0 /* lib */,
+				C599B2A522578B2700836BC0 /* base */,
 				C54AC69D224871730008B954 /* argv-array.m */,
 				C54AC69F224871810008B954 /* argv-array.h */,
 				C54AC8A52249DD8D0008B954 /* string-list.h */,
@@ -231,12 +237,14 @@
 				C58B761B2265CE7300637ED6 /* ttymodes.c in Sources */,
 				C59B640D222556A4004E2EFC /* main.m in Sources */,
 				C54AC6A222488B790008B954 /* wrapper.m in Sources */,
+				C5D6F78C226F4199001EE2B1 /* signal.c in Sources */,
 				C5DD83D0226C7FF80005EEFC /* readn.c in Sources */,
 				C54AC6992247C8C70008B954 /* add.m in Sources */,
 				C5DD83CE226C7BCE0005EEFC /* written.c in Sources */,
 				C54AC6A42248A90B0008B954 /* usage.m in Sources */,
 				C54AC69E224871730008B954 /* argv-array.m in Sources */,
 				C54AC8AC224A1B850008B954 /* help.m in Sources */,
+				C5D6F78E2270312F001EE2B1 /* process.c in Sources */,
 				C54AC6962247C7410008B954 /* memo.m in Sources */,
 				C54AC8A72249DD8D0008B954 /* string-list.m in Sources */,
 				C5D5EB952259EDD90049F094 /* color.m in Sources */,

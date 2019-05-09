@@ -1,0 +1,4 @@
+常用来判断动态连接库中是否存在某接口
+
+参考：
+https://stackoverflow.com/questions/274753/how-to-make-weak-linking-work-with-gcc

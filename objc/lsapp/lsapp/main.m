@@ -25,6 +25,7 @@ int main(int argc, const char * argv[]) {
         [query setPredicate:[NSPredicate predicateWithFormat:@"(kMDItemKind == 'Application') || \
                                                                (kMDItemKind == '应用程序') || \
                                                                (kMDItemContentType == 'com.apple.application-bundle')"]];
+        kMDItemContentType
         [[NSNotificationCenter defaultCenter] addObserver:result
                                                  selector:@selector(queryDidFinishGathering:)
                                                      name:NSMetadataQueryDidFinishGatheringNotification
